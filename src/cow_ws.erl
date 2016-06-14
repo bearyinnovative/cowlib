@@ -267,10 +267,10 @@ parse_header(<< Fin:1, Rsv:3/bits, Opcode:4, 0:1, 126:7, Len:16, Rest/bits >>, _
 parse_header(<< Fin:1, Rsv:3/bits, Opcode:4, 1:1, 126:7, Len:16, MaskKey:32, Rest/bits >>, _, FragState) when Len > 125, Opcode < 8 ->
 	parse_header(Opcode, Fin, FragState, Rsv, Len, MaskKey, Rest);
 %% 63 bits payload length.
-parse_header(<< Fin:1, Rsv:3/bits, Opcode:4, 0:1, 127:7, 0:1, Len:63, Rest/bits >>, _, FragState) when Len > 16#ffff, Opcode < 8 ->
-	parse_header(Opcode, Fin, FragState, Rsv, Len, undefined, Rest);
-parse_header(<< Fin:1, Rsv:3/bits, Opcode:4, 1:1, 127:7, 0:1, Len:63, MaskKey:32, Rest/bits >>, _, FragState) when Len > 16#ffff, Opcode < 8 ->
-	parse_header(Opcode, Fin, FragState, Rsv, Len, MaskKey, Rest);
+%% parse_header(<< Fin:1, Rsv:3/bits, Opcode:4, 0:1, 127:7, 0:1, Len:63, Rest/bits >>, _, FragState) when Len > 16#ffff, Opcode < 8 ->
+%% 	parse_header(Opcode, Fin, FragState, Rsv, Len, undefined, Rest);
+%% parse_header(<< Fin:1, Rsv:3/bits, Opcode:4, 1:1, 127:7, 0:1, Len:63, MaskKey:32, Rest/bits >>, _, FragState) when Len > 16#ffff, Opcode < 8 ->
+%% 	parse_header(Opcode, Fin, FragState, Rsv, Len, MaskKey, Rest);
 %% When payload length is over 63 bits, the most significant bit MUST be 0.
 parse_header(<< _:9, 127:7, 1:1, _/bits >>, _, _) -> error;
 %% For the next two clauses, it can be one of the following:
